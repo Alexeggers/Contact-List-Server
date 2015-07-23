@@ -44,7 +44,7 @@ public class SQL {
 		return contacts;
 	}
 	
-	public ArrayList<IContact> searchForContact(String searchParameter) {
+	public List<IContact> searchForContact(String searchParameter) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT * FROM CONTACTS WHERE Name LIKE '%");
 		sb.append(searchParameter);
