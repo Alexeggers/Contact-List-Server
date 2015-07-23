@@ -1,9 +1,15 @@
 package de.xailabs.server;
 
+import java.io.Serializable;
+
 import de.xailabs.interfaces.IContact;
 
-public class Contact implements IContact {
+public class Contact implements IContact, Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9022314547799392674L;
 	private int id;
 	private String name;
 	private String phonenumber;
