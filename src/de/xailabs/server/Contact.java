@@ -9,6 +9,21 @@ public class Contact implements IContact {
 	private String phonenumber;
 	private String notes;
 	
+	public Contact() {
+		
+	}
+	
+	public Contact(String name, String phonenumber, String notes) {
+		this.name = name;
+		this.phonenumber = phonenumber;
+		this.notes = notes;
+	}
+	
+	public Contact(int id, String name, String phonenumber, String notes) {
+		this(name, phonenumber, notes);
+		this.id = id;
+	}
+	
 	
 	@Override
 	public void setName(String name) {
