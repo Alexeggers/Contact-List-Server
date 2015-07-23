@@ -1,9 +1,15 @@
 package de.xailabs.server;
 
+import java.io.Serializable;
+
 import de.xailabs.interfaces.*;
 
-public class CommandObject implements ICommandObject {
+public class CommandObject implements ICommandObject, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -618587630023545326L;
 	private String command;
 	private String searchParameter;
 	private IContact contact;
