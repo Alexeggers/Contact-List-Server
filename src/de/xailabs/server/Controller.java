@@ -2,6 +2,7 @@ package de.xailabs.server;
 
 import java.util.List;
 
+import de.xailabs.client.CommandObject;
 import de.xailabs.interfaces.IContact;
 
 public class Controller {

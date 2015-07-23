@@ -7,6 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
 
+import de.xailabs.client.CommandObject;
 import de.xailabs.interfaces.IContact;
 
 public class ClientConnection {
@@ -20,18 +21,19 @@ public class ClientConnection {
 	}
 	
 	public void startConnection() {
-		try (
+		try {
 			ServerSocket serverSocket = new ServerSocket(portNumber);
 			Socket clientSocket = serverSocket.accept();
 			ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());                   
             ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
-		) {
-			
-			CommandObject inputCommand;
+		
+			System.out.println("Connection made");
+			CommandObject inputCommand= (CommandObject) in.readObject();
 			List<IContact> contacts;
-			while((inputCommand = (CommandObject) in.readObject()) != null) {
+			while(inputCommand != null) {
 				contacts = controller.acceptCommand(inputCommand);
-				out.writeObject(contacts);
+//				out.writeObject(contacts);
+				inputCommand= (CommandObject) in.readObject();
 			}
 		} catch (IOException e) {
             System.out.println("Exception caught when trying to listen on port "
