@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.xailabs.interfaces.IContact;
+
 
 public class SQL {
 	
@@ -24,16 +26,16 @@ public class SQL {
 	    }
 	}
 	
-	public List<Contact> getContacts() {
+	public List<IContact> getContacts() {
 		ResultSet rs = executeQuery("SELECT * FROM CONTACTS;");
-		ArrayList<Contact> contacts = new ArrayList<Contact>();
+		ArrayList<IContact> contacts = new ArrayList<IContact>();
 		try {
 			while(rs.next()) {
 				int id = rs.getInt("ID");
 				String name = rs.getString("Name");
 				String number = rs.getString("Phonenumber");
 				String notes = rs.getString("Notes");
-				Contact contact = new Contact(id, name, number, notes);
+				IContact contact = new Contact(id, name, number, notes);
 				contacts.add(contact);
 			}
 		} catch(SQLException e) {
@@ -42,7 +44,7 @@ public class SQL {
 		return contacts;
 	}
 	
-	public ArrayList<Contact> searchForContact(String searchParameter) {
+	public ArrayList<IContact> searchForContact(String searchParameter) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT * FROM CONTACTS WHERE Name LIKE '%");
 		sb.append(searchParameter);
@@ -50,14 +52,14 @@ public class SQL {
 		sb.append(searchParameter);
 		sb.append("%';");
 		ResultSet rs = executeQuery(sb.toString());
-		ArrayList<Contact> foundContacts = new ArrayList<Contact>();
+		ArrayList<IContact> foundContacts = new ArrayList<IContact>();
 		try {
 			while(rs.next()) {
 				int id = rs.getInt("ID");
 				String name = rs.getString("Name");
 				String number = rs.getString("Phonenumber");
 				String notes = rs.getString("Notes");
-				Contact contact = new Contact(id, name, number, notes);
+				IContact contact = new Contact(id, name, number, notes);
 				foundContacts.add(contact);
 			}
 		} catch(SQLException e) {
@@ -66,7 +68,7 @@ public class SQL {
 		return foundContacts;
 	}
 	
-	public void addNewContact(Contact contact) {
+	public void addNewContact(IContact contact) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("INSERT INTO CONTACTS (Name, Phonenumber, Notes) VALUES ('");
 		sb.append(contact.getName());
@@ -78,7 +80,7 @@ public class SQL {
 		executeUpdate(sb.toString());
 	}
 	
-	public void updateContact(Contact contact) {
+	public void updateContact(IContact contact) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("UPDATE CONTACTS SET Name = '");
 		sb.append(contact.getName());
@@ -91,7 +93,7 @@ public class SQL {
 		executeUpdate(sb.toString());
 	}
 	
-	public boolean deleteContact(Contact contact) {
+	public boolean deleteContact(IContact contact) {
 		boolean deleted = executeUpdate("DELETE FROM CONTACTS WHERE ID = " + contact.getId() + ";");
 		return deleted;
 	}
