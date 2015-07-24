@@ -21,19 +21,19 @@ public class ClientConnection {
 	}
 	
 	public void startConnection() {
-		try {
+		try (
 			ServerSocket serverSocket = new ServerSocket(portNumber);
 			Socket clientSocket = serverSocket.accept();
 			ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());                   
             ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
-		
+		) {
 			System.out.println("Connection made");
-			CommandObject inputCommand= (CommandObject) in.readObject();
 			List<IContact> contacts;
-			while(inputCommand != null) {
+			CommandObject inputCommand;
+			while ((inputCommand = (CommandObject) in.readObject()) != null) {
 				contacts = controller.acceptCommand(inputCommand);
-//				out.writeObject(contacts);
-				inputCommand= (CommandObject) in.readObject();
+				out.writeObject(contacts);
+				out.flush();
 			}
 		} catch (IOException e) {
             System.out.println("Exception caught when trying to listen on port "

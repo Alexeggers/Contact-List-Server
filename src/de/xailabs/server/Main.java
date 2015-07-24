@@ -4,7 +4,7 @@ public class Main {
 	
 	public static void main(String[] args) {
 		Controller controller = new Controller();
-		ClientConnection clientConnection = new ClientConnection(4000, controller);
+		ClientConnection clientConnection = new ClientConnection(13337, controller);
 		clientConnection.startConnection();
 	}
 }
