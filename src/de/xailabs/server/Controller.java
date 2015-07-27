@@ -18,17 +18,21 @@ public class Controller {
 	public List<IContact> acceptCommand(CommandObject commandObject) {
 		String command = commandObject.getCommand();
 		IContact contact = (Contact) commandObject.getContact();
+		String searchparameter = commandObject.getSearchparameter();
 		if (command.equals("view all contacts")) {
-			
+			contacts = sql.getContacts();
 		} else if (command.equals("new contact")) {
 			sql.addNewContact(contact);
+			contacts = sql.getContacts();
 		} else if (command.equals("update contact")) {
 			sql.updateContact(contact);
+			contacts = sql.getContacts();
 		} else if (command.equals("delete contact")) {
 			sql.deleteContact(contact);
+			contacts = sql.getContacts();
+		} else if (command.equals("search contact")) {
+			contacts = sql.searchForContact(searchparameter);
 		}
-		contacts = sql.getContacts();
 		return contacts;
 	}
-	
 }
