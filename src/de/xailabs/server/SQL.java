@@ -20,7 +20,7 @@ public class SQL {
 	public SQL () {
 		try {
 			Class.forName("org.sqlite.JDBC");
-			connection = DriverManager.getConnection("jdbc:sqlite:database/ContactList.sqlite");
+			connection = DriverManager.getConnection("jdbc:sqlite:database/VerContacts.sqlite");
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.exit(0);
@@ -36,7 +36,8 @@ public class SQL {
 				String name = rs.getString("Name");
 				String number = rs.getString("Phonenumber");
 				String notes = rs.getString("Notes");
-				IContact contact = new Contact(id, name, number, notes);
+				int version = rs.getInt("Version");
+				IContact contact = new Contact(id, name, number, notes, version);
 				contacts.add(contact);
 			}
 		} catch(SQLException e) {
@@ -60,7 +61,8 @@ public class SQL {
 				String name = rs.getString("Name");
 				String number = rs.getString("Phonenumber");
 				String notes = rs.getString("Notes");
-				IContact contact = new Contact(id, name, number, notes);
+				int version = rs.getInt("Version");
+				IContact contact = new Contact(id, name, number, notes, version);
 				foundContacts.add(contact);
 			}
 		} catch(SQLException e) {
@@ -71,13 +73,15 @@ public class SQL {
 	
 	public void addNewContact(IContact contact) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("INSERT INTO CONTACTS (Name, Phonenumber, Notes) VALUES ('");
+		sb.append("INSERT INTO CONTACTS (Name, Phonenumber, Notes, Version) VALUES ('");
 		sb.append(contact.getName());
 		sb.append("', '");
 		sb.append(contact.getPhonenumber());
 		sb.append("', '");
 		sb.append(contact.getNotes());
-		sb.append("');");
+		sb.append("', ");
+		sb.append(1);
+		sb.append(");");
 		executeUpdate(sb.toString());
 	}
 	
@@ -89,7 +93,8 @@ public class SQL {
 		sb.append(contact.getPhonenumber());
 		sb.append("', Notes = '");
 		sb.append(contact.getNotes());
-		sb.append("' WHERE ID = ");
+		sb.append("', Version = Version + 1");
+		sb.append(" WHERE ID = ");
 		sb.append(contact.getId());
 		executeUpdate(sb.toString());
 	}
@@ -129,5 +134,26 @@ public class SQL {
 			System.err.println( e.getClass().getName() + ": " + e.getMessage() );
 		    System.exit(0);
 		}
+	}
+
+	/**
+	 * Returns the version of the contact with the id given.
+	 * @param id ID of checked contact
+	 * @return int Version
+	 */
+	public int getVersion(int id) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("SELECT * FROM CONTACTS WHERE ID = ");
+		sb.append(id);
+		sb.append(";");
+		String sql = sb.toString();
+		ResultSet rs = executeQuery(sql);
+		int version = 1;
+		try {
+			version = rs.getInt("Version");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return version;
 	}
 }
