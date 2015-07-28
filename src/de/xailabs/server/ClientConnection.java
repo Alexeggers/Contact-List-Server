@@ -15,6 +15,7 @@ public class ClientConnection {
 	private int portNumber;
 	private Controller controller;
 	
+	
 	public ClientConnection(int portNumber, Controller controller) {
 		this.portNumber = portNumber;
 		this.controller = controller;
@@ -31,9 +32,15 @@ public class ClientConnection {
 			List<IContact> contacts;
 			CommandObject inputCommand;
 			while ((inputCommand = (CommandObject) in.readObject()) != null) {
-				contacts = controller.acceptCommand(inputCommand);
-				out.writeObject(contacts);
-				out.flush();
+				if (inputCommand.getCommand() == "check version") {
+					Boolean congruent = controller.checkVersion(inputCommand);
+					out.writeBoolean(congruent);
+					out.flush();
+				} else {
+					contacts = controller.acceptCommand(inputCommand);
+					out.writeObject(contacts);
+					out.flush();
+				}
 			}
 		} catch (IOException e) {
             System.out.println("Exception caught when trying to listen on port "
