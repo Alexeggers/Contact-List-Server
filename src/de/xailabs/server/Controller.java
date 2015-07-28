@@ -35,4 +35,14 @@ public class Controller {
 		}
 		return contacts;
 	}
+
+	public Boolean checkVersion(CommandObject inputCommand) {
+		Boolean congruent = false;
+		int id = inputCommand.getContact().getId();
+		int version = inputCommand.getContact().getVersion();
+		if (version == sql.getVersion(id)) {
+			congruent = true;
+		}		
+		return congruent;
+	}
 }
