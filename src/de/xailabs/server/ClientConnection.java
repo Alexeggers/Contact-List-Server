@@ -29,7 +29,6 @@ public class ClientConnection {
             ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
 		) {
 			System.out.println("Connection made");
-			List<IContact> contacts;
 			CommandObject inputCommand;
 			while ((inputCommand = (CommandObject) in.readObject()) != null) {
 				if (inputCommand.getCommand() == "check version") {
@@ -37,7 +36,7 @@ public class ClientConnection {
 					out.writeBoolean(congruent);
 					out.flush();
 				} else {
-					contacts = controller.acceptCommand(inputCommand);
+					List<IContact> contacts = controller.acceptCommand(inputCommand);
 					out.writeObject(contacts);
 					out.flush();
 				}
