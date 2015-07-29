@@ -16,16 +16,15 @@ public class ServerController {
 		Object returnObject = null;
 		String command = commandObject.getCommand();
 		IContact contact = (Contact) commandObject.getContact();
-		String searchparameter = commandObject.getSearchparameter();
+		String searchParameter = commandObject.getSearchparameter();
 		if (command.equals("view all contacts")) {
 			returnObject = sql.getContacts();
 		} else if (command.equals("new contact")) {
-			sql.addNewContact(contact);
+			returnObject = sql.addNewContact(contact);
 		} else if (command.equals("update contact")) {
 			sql.updateContact(contact);
 		} else if (command.equals("delete contact")) {
 			sql.deleteContact(contact);
-			returnObject = sql.searchForContact(searchparameter);
 		} else if (command.equals("check version")) {
 			int sqlVersion = sql.getVersion(contact.getId());
 			if (sqlVersion == contact.getVersion()) {
@@ -35,6 +34,8 @@ public class ServerController {
 			}
 		} else if (command.equals("get id")) {
 			returnObject = sql.getMaxID();
+		} else if (command.equals("search contact")) {
+			returnObject = sql.searchForContact(searchParameter);
 		}
 		return returnObject;
 	}

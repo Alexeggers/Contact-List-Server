@@ -71,7 +71,7 @@ public class SQL {
 		return foundContacts;
 	}
 	
-	public void addNewContact(IContact contact) {
+	public Integer addNewContact(IContact contact) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("INSERT INTO CONTACTS (Name, Phonenumber, Notes, Version) VALUES ('");
 		sb.append(contact.getName());
@@ -83,6 +83,9 @@ public class SQL {
 		sb.append(1);
 		sb.append(");");
 		executeUpdate(sb.toString());
+		sb = new StringBuilder();
+		Integer id = getMaxID();
+		return id;
 	}
 	
 	public void updateContact(IContact contact) {
@@ -139,9 +142,9 @@ public class SQL {
 	public int getMaxID() {
 		String sql = "SELECT MAX(ID) FROM CONTACTS";
 		ResultSet rs = executeQuery(sql);
-		int id = ((int)(Math.random()) * 100);
+		int id = -1;
 		try {
-			id = rs.getInt("ID");
+			id = rs.getInt(1);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

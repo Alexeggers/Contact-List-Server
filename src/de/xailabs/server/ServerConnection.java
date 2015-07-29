@@ -29,8 +29,7 @@ public class ServerConnection {
 			System.out.println("Connection made");
 			CommandObject inputCommand;
 			while ((inputCommand = (CommandObject) in.readObject()) != null) {
-				if (inputCommand.getCommand().equals("delete contact") || inputCommand.getCommand().equals("update contact") 
-						|| inputCommand.getCommand().equals("new contact")) {
+				if (inputCommand.getCommand().equals("delete contact") || inputCommand.getCommand().equals("update contact")) {
 					controller.acceptCommand(inputCommand);
 				} else {
 					Object returnObject = controller.acceptCommand(inputCommand);
