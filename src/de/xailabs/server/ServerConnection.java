@@ -19,6 +19,9 @@ public class ServerConnection {
 		this.controller = controller;
 	}
 	
+	/**
+	 * Starts up the server and waits for input when it does get connected.
+	 */
 	public void startConnection() {
 		try (
 			ServerSocket serverSocket = new ServerSocket(portNumber);

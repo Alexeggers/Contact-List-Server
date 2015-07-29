@@ -27,6 +27,10 @@ public class SQL {
 	    }
 	}
 	
+	/**
+	 * Returns all contacts in the SQL database.
+	 * @return <List<IContact>>
+	 */
 	public List<IContact> getContacts() {
 		ResultSet rs = executeQuery("SELECT * FROM CONTACTS;");
 		ArrayList<IContact> contacts = new ArrayList<IContact>();
@@ -46,6 +50,11 @@ public class SQL {
 		return contacts;
 	}
 	
+	/**
+	 * Returns all contacts corresponding the search parameter in their name or notes.
+	 * @param searchParameter The parameter that is being looked for
+	 * @return <List<IContact>>
+	 */
 	public List<IContact> searchForContact(String searchParameter) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT * FROM CONTACTS WHERE Name LIKE '%");
@@ -71,6 +80,11 @@ public class SQL {
 		return foundContacts;
 	}
 	
+	/**
+	 * Adds a new contact and returns the contacts SQL-given ID.
+	 * @param contact The contact being added
+	 * @return Integer
+	 */
 	public Integer addNewContact(IContact contact) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("INSERT INTO CONTACTS (Name, Phonenumber, Notes, Version) VALUES ('");
@@ -88,6 +102,10 @@ public class SQL {
 		return id;
 	}
 	
+	/**
+	 * Updates a contact in SQL.
+	 * @param contact A contact containing the updated values
+	 */
 	public void updateContact(IContact contact) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("UPDATE CONTACTS SET Name = '");
@@ -102,11 +120,21 @@ public class SQL {
 		executeUpdate(sb.toString());
 	}
 	
+	/**
+	 * Deletes the contact in SQL.
+	 * @param contact The contact containing the id of the contact needing to be deleted
+	 * @return Boolean denoting whether the contact got deleted successfully
+	 */
 	public boolean deleteContact(IContact contact) {
 		boolean deleted = executeUpdate("DELETE FROM CONTACTS WHERE ID = " + contact.getId() + ";");
 		return deleted;
 	}
 	
+	/**
+	 * Executes an SQL update.
+	 * @param sql The SQL statement provided
+	 * @return Boolean denoting whether the update occurred successfully
+	 */
 	public boolean executeUpdate(String sql) {
 		boolean executed = true;
 		try {
@@ -119,6 +147,11 @@ public class SQL {
 		return executed;
 	}
 	
+	/**
+	 * Executes an SQL query.
+	 * @param sql The SQL statement provided
+	 * @return ResultSet with the result of the query
+	 */
 	public ResultSet executeQuery(String sql) {
 		ResultSet rs = null;
 		try {
@@ -130,6 +163,9 @@ public class SQL {
 		return rs;
 	}
 	
+	/**
+	 * Closes the connection to SQL.
+	 */
 	public void closeConnection() {
 		try {
 			connection.close();
@@ -139,6 +175,10 @@ public class SQL {
 		}
 	}
 	
+	/**
+	 * Finds the maximum ID in contacts.
+	 * @return int ID of the contact
+	 */
 	public int getMaxID() {
 		String sql = "SELECT MAX(ID) FROM CONTACTS";
 		ResultSet rs = executeQuery(sql);
