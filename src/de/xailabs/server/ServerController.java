@@ -1,7 +1,5 @@
 package de.xailabs.server;
 
-import java.util.List;
-
 import de.xailabs.client.CommandObject;
 import de.xailabs.interfaces.IContact;
 import de.xailabs.client.Contact;
@@ -9,31 +7,36 @@ import de.xailabs.client.Contact;
 public class ServerController {
 	
 	private SQL sql;
-	private List<IContact> contacts;
 	
 	public ServerController() {
 		sql = new SQL();
 	}
 	
-	public List<IContact> acceptCommand(CommandObject commandObject) {
+	public Object acceptCommand(CommandObject commandObject) {
+		Object returnObject = null;
 		String command = commandObject.getCommand();
 		IContact contact = (Contact) commandObject.getContact();
 		String searchparameter = commandObject.getSearchparameter();
 		if (command.equals("view all contacts")) {
-			contacts = sql.getContacts();
+			returnObject = sql.getContacts();
 		} else if (command.equals("new contact")) {
 			sql.addNewContact(contact);
-			contacts = sql.getContacts();
 		} else if (command.equals("update contact")) {
 			sql.updateContact(contact);
-			contacts = sql.getContacts();
 		} else if (command.equals("delete contact")) {
 			sql.deleteContact(contact);
-			contacts = sql.getContacts();
-		} else if (command.equals("search contact")) {
-			contacts = sql.searchForContact(searchparameter);
+			returnObject = sql.searchForContact(searchparameter);
+		} else if (command.equals("check version")) {
+			int sqlVersion = sql.getVersion(contact.getId());
+			if (sqlVersion == contact.getVersion()) {
+				returnObject = new Boolean(true);
+			} else {
+				returnObject = new Boolean(false);
+			}
+		} else if (command.equals("get id")) {
+			returnObject = sql.getMaxID();
 		}
-		return contacts;
+		return returnObject;
 	}
 
 	public Boolean checkVersion(CommandObject inputCommand) {

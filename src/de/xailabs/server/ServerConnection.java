@@ -5,10 +5,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.List;
 
 import de.xailabs.client.CommandObject;
-import de.xailabs.interfaces.IContact;
 
 public class ServerConnection {
 	
@@ -31,13 +29,12 @@ public class ServerConnection {
 			System.out.println("Connection made");
 			CommandObject inputCommand;
 			while ((inputCommand = (CommandObject) in.readObject()) != null) {
-				if (inputCommand.getCommand().equals("check version") || inputCommand.equals("get id")) {
-					Boolean congruent = controller.checkVersion(inputCommand);
-					out.writeObject(congruent);
-					out.flush();
+				if (inputCommand.getCommand().equals("delete contact") || inputCommand.getCommand().equals("update contact") 
+						|| inputCommand.getCommand().equals("new contact")) {
+					controller.acceptCommand(inputCommand);
 				} else {
-					List<IContact> contacts = controller.acceptCommand(inputCommand);
-					out.writeObject(contacts);
+					Object returnObject = controller.acceptCommand(inputCommand);
+					out.writeObject(returnObject);
 					out.flush();
 				}
 			}
