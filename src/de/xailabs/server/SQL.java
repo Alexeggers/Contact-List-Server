@@ -135,6 +135,18 @@ public class SQL {
 		    System.exit(0);
 		}
 	}
+	
+	public int getMaxID() {
+		String sql = "SELECT MAX(ID) FROM CONTACTS";
+		ResultSet rs = executeQuery(sql);
+		int id = ((int)(Math.random()) * 100);
+		try {
+			id = rs.getInt("ID");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return id;
+	}
 
 	/**
 	 * Returns the version of the contact with the id given.
