@@ -19,8 +19,8 @@ public class SQL {
 	
 	public SQL () {
 		try {
-			Class.forName("org.sqlite.JDBC");
-			connection = DriverManager.getConnection("jdbc:sqlite:database/VerContacts.sqlite");
+			Class.forName("com.mysql.jdbc.Driver");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/contacts?user=java&password=password");
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.exit(0);
@@ -184,10 +184,13 @@ public class SQL {
 		ResultSet rs = executeQuery(sql);
 		int id = -1;
 		try {
-			id = rs.getInt(1);
+			if (rs.next()) {
+				id = rs.getInt(1);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
 		return id;
 	}
 
@@ -203,9 +206,11 @@ public class SQL {
 		sb.append(";");
 		String sql = sb.toString();
 		ResultSet rs = executeQuery(sql);
-		int version = 1;
+		int version = -1;
 		try {
-			version = rs.getInt("Version");
+			if (rs.next()) {
+				version = rs.getInt("Version");
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
