@@ -8,7 +8,7 @@
    <persistence-unit name="Contact_JPA" transaction-type="RESOURCE_LOCAL">
    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
    		
-      <class>de.xailabs.JPAtest.Contact</class>
+      <class>de.xailabs.client.Contact</class>
 
       <properties>
          <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/contacts"/>

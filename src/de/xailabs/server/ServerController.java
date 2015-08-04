@@ -6,10 +6,10 @@ import de.xailabs.client.Contact;
 
 public class ServerController {
 	
-	private SQL sql;
+	private DatabaseConnection jpaCon;
 	
 	public ServerController() {
-		sql = new SQL();
+		jpaCon = new DatabaseConnection();
 	}
 	
 	/**
@@ -23,24 +23,26 @@ public class ServerController {
 		IContact contact = (Contact) commandObject.getContact();
 		String searchParameter = commandObject.getSearchparameter();
 		if (command.equals("view all contacts")) {
-			returnObject = sql.getContacts();
+			returnObject = jpaCon.getContacts();
 		} else if (command.equals("new contact")) {
-			returnObject = sql.addNewContact(contact);
+			returnObject = jpaCon.addNewContact(contact);
 		} else if (command.equals("update contact")) {
-			sql.updateContact(contact);
+			jpaCon.updateContact(contact);
 		} else if (command.equals("delete contact")) {
-			sql.deleteContact(contact);
+			jpaCon.deleteContact(contact);
 		} else if (command.equals("check version")) {
-			int sqlVersion = sql.getVersion(contact.getId());
+			int sqlVersion = jpaCon.getVersion(contact.getId());
 			if (sqlVersion == contact.getVersion()) {
 				returnObject = new Boolean(true);
 			} else {
 				returnObject = new Boolean(false);
 			}
 		} else if (command.equals("get id")) {
-			returnObject = sql.getMaxID();
+			returnObject = jpaCon.getMaxID();
 		} else if (command.equals("search contact")) {
-			returnObject = sql.searchForContact(searchParameter);
+			returnObject = jpaCon.searchForContact(searchParameter);
+		} else if (command.equals("get contact")) {
+			returnObject = jpaCon.getContact(contact.getId());
 		}
 		return returnObject;
 	}
@@ -54,7 +56,7 @@ public class ServerController {
 		Boolean congruent = false;
 		int id = inputCommand.getContact().getId();
 		int version = inputCommand.getContact().getVersion();
-		if (version == sql.getVersion(id)) {
+		if (version == jpaCon.getVersion(id)) {
 			congruent = true;
 		}		
 		return congruent;
