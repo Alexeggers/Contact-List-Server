@@ -8,6 +8,7 @@
    <persistence-unit name="Contact_JPA" transaction-type="RESOURCE_LOCAL">
    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
    		
+      <class>de.xailabs.client.Address</class>
       <class>de.xailabs.client.Contact</class>
 
       <properties>
