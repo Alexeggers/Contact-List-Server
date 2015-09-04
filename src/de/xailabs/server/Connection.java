@@ -1,13 +1,15 @@
 package de.xailabs.server;
 
+import java.net.Socket;
+
 public class Connection implements Runnable {
 
 	ServerController controller;
-	int portNumber;
+	Socket socket;
 	
-	public Connection (ServerController controller, int portNumber) {
+	public Connection (ServerController controller, Socket socket) {
 		this.controller = controller;
-		this.portNumber = portNumber;
+		this.socket = socket;
 	}
 	
 	@Override
