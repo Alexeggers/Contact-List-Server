@@ -6,6 +6,7 @@ public class Connection implements Runnable {
 
 	ServerController controller;
 	Socket socket;
+	int i;
 	
 	public Connection (ServerController controller, Socket socket) {
 		this.controller = controller;
